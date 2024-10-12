@@ -1,0 +1,56 @@
+import profesionales.*
+import empresas.*
+import universidades.*
+
+describe "Tests para las empresas que contratan profesionales" {
+    const uniSanMartin = new Universidad(provincia = "Buenos Aires", honorarios = 3500)
+    const uniRosario = new Universidad(provincia = "Santa Fe", honorarios = 2800)
+    const uniCorrientes = new Universidad(provincia = "Corrientes", honorarios = 4200)
+    const uniHurlingham = new Universidad(provincia = "Buenos Aires", honorarios = 8800)
+
+    const juana = new ProfesionalVinculado(universidad = uniRosario)
+    const melina = new ProfesionalAsociado(universidad = uniCorrientes)
+    const rocio = new ProfesionalLibre(universidad = uniHurlingham, honorarios = 5000, provincia = #{"Buenos Aires", "Cordoba", "Santa Fe"})
+    const luciana = new ProfesionalLibre(universidad = uniRosario, honorarios = 3200, provincia = #{"Santa Fe", "Entre Rios"})
+
+    const empresa1 = new Empresa(honorarios = 3500)
+
+    method initialize() {
+        empresa1.contratarEmpleado(juana)
+        empresa1.contratarEmpleado(melina)
+        empresa1.contratarEmpleado(rocio)
+        empresa1.contratarEmpleado(luciana)
+    }
+    
+    test "dos de sus profesionales estudiaron en Rosario, uno en Hurlingham, ninguno (o sea cero) en San Martín" {
+        assert.equals(2, empresa1.empleadosDeUniversidad(uniRosario))
+        assert.equals(1, empresa1.empleadosDeUniversidad(uniHurlingham))
+        assert.equals(0, empresa1.empleadosDeUniversidad(uniSanMartin))
+    }
+
+    test "como profesionales caros, solamente a Rocío." {
+        assert.equals(#{rocio}, empresa1.empleadosCaros())
+    }
+
+    test "como universidades formadoras, a las de Rosario, Corrientes y Hurlingham." {
+        assert.equals(#{uniRosario, uniCorrientes, uniHurlingham}, empresa1.universidadesFormadoras())
+    }
+
+    test "como profesional más barato a Juana." {
+        assert.equals(juana, empresa1.profesionalMasBarato())
+    }
+
+    test "la empresa es de gente acotada" {
+        assert.that(empresa1.esDeGenteAcotada())
+    }
+
+    test "si le agregamos dos provincias más a Luciana, la empresa ya no es de gente acotada" {
+        luciana.agregarProvincia("Corrientes")
+        luciana.agregarProvincia("Misiones")
+        assert.notThat(empresa1.esDeGenteAcotada())
+    }
+
+    //------------- ETAPA 2 -----------------
+
+    
+}
