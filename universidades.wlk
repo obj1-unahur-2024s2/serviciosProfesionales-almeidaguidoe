@@ -6,3 +6,11 @@ class Universidad {
         totalDonaciones += importe
     }
 }
+
+object asociacionDeProfesionalesDelLitoral {
+    var totalRecaudado = 0
+
+    method recibirPago(importe) {
+        totalRecaudado += importe
+    }
+}

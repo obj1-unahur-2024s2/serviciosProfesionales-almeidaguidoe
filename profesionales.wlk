@@ -1,3 +1,4 @@
+import universidades.*
 class ProfesionalVinculado {
   
   const property universidad
@@ -14,6 +15,7 @@ class ProfesionalAsociado {
   const property universidad
   method honorarios() = 3000
   const property provincia = #{"Entre Ríos", "Santa Fe", "Corrientes"}
+  method cobrar(importe) {asociacionDeProfesionalesDelLitoral.recibirPago(importe)}
 }
 
 class ProfesionalLibre {
@@ -24,4 +26,12 @@ class ProfesionalLibre {
     provincia.add(unaProvincia)
   }
   const property honorarios
+  var totalRecaudado = 0
+  method cobrar(importe) {totalRecaudado += importe}
+  method pasarDinero(otroProfesional, importe) {
+    if (importe <= totalRecaudado) {
+      totalRecaudado -= importe
+      otroProfesional.cobrar(importe)
+    }
+  }
 }
